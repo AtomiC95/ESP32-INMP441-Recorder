@@ -2,11 +2,6 @@
 #include "esp_log.h"
 #include "driver/i2s.h"
 
-// I2S_PORT_ONE: maps to a range of pins, choice is arbitrary
-// ---> Alles in Microphone class als private constexpr
-// #define I2S_PORT_ONE I2S_NUM_0
-// #define I2S_PORT_TWO I2S_NUM_1
-#define DEBUG false
 
 // initialize microphone using i2s. Der hat ne Abtastrate von, der benutzt GPIO 1,2,3,4, ist eingestellt auf einen Kanal, Liest ein sample mit der größ0e 512 byte innerhalb von 3 sekunden.
 Microphone::Status Microphone::init()
@@ -20,8 +15,8 @@ Microphone::Status Microphone::init()
       i2s_comm_format_t(I2S_COMM_FORMAT_STAND_I2S |
                         I2S_COMM_FORMAT_I2S_MSB);
   i2s_config.intr_alloc_flags = 0;
-  i2s_config.dma_buf_count = 4;// remove magic numbers!
-  i2s_config.dma_buf_len = 1024; // remove magic numbers!
+  i2s_config.dma_buf_count = DMA_BUFFER_COUNT;
+  i2s_config.dma_buf_len = DMA_BUFFER_LEN;
   i2s_config.use_apll = false;
   i2s_config.tx_desc_auto_clear = false;
   i2s_config.fixed_mclk = 0;
@@ -34,7 +29,7 @@ Microphone::Status Microphone::init()
   i2s_pin_config_t pin_config_one = {};
   pin_config_one.bck_io_num = I2S_SCK_I2S0;
   pin_config_one.ws_io_num = I2S_WS_I2S0;
-  pin_config_one.data_out_num = -1; // remove magic numbers!
+  pin_config_one.data_out_num = NOT_USED; // remove magic numbers!
   pin_config_one.data_in_num = I2S_SD_I2S0;
 
   result = i2s_set_pin(I2S_NUM_0, &pin_config_one);
@@ -51,7 +46,7 @@ Microphone::Status Microphone::read(std::array<int16_t, Microphone::BUFFERDEPTH>
 {
   size_t bytesRead = 0;
   esp_err_t result_I2S0 = i2s_read(I2S_NUM_0, &data, sizeof(int16_t) * BUFFERDEPTH,
-               &bytesRead, 1000); // remove magic numbers!
+               &bytesRead, TICKS_TO_WAIT); // remove magic numbers!
   if (result_I2S0 != ESP_OK || bytesRead != BUFFERDEPTH) {
     return Status::Error;
   }
