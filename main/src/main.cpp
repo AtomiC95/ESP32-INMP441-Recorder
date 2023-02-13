@@ -16,10 +16,8 @@ void gatherData(Microphone &microphone, SDcard &filesystem, std::array<int16_t, 
     filesystem.save(data);
   }
 
-  // log finished
-  vTaskDelay(1 * pdSECOND); // needed?
+  vTaskDelay(1 * pdSECOND);
   filesystem.unmount();
-  // log unmound
 }
 
 void mainTask()
@@ -45,7 +43,7 @@ void mainTask()
 
   while (true)
   {
-    vTaskDelay(1 * pdSECOND); // wirklich?
+    vTaskDelay(1 * pdSECOND);
   }
 }
 

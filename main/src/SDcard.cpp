@@ -1,10 +1,7 @@
 #include "SDcard.h"
 
-// const char *file_foo = MOUNT_POINT "/foo.txt";
-
 SDcard::Status SDcard::mount()
 {
-    // error handling! keine magic numbers
     ret = gpio_install_isr_service(ESP_INTR_FLAG_LEVEL1);
     if (ret != ESP_OK)
     {
