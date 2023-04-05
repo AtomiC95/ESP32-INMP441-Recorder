@@ -57,10 +57,10 @@ SDcard::Status SDcard::save(std::array<int16_t, Microphone::BUFFERDEPTH> &outbuf
     f = fopen(filename.c_str(), "a");
     for (int i = 0; i < outbuffer_i2s0.size(); i++) {
         fprintf(f, "%d\n", outbuffer_i2s0[i]);
-    }
+        printf("%d\n", outbuffer_i2s0[i]);
+    } 
     fclose(f);
-    ESP_LOGI(SDcardTAG, "File has been closed");
-    return Status::Success;
+        return Status::Success;
 }
 
 // All done, unmount partition and disable SPI peripheral
@@ -74,19 +74,47 @@ SDcard::Status SDcard::unmount() {
 }
 
 // checks if file exists and creates a new one to a maximum of 5.
-SDcard::Status SDcard::files_checker() {
-    filename = BASE_FILENAME;
-    FILE *f = fopen(filename.c_str(), "a");
-    if (f == NULL) {
-        ESP_LOGE(SDcardTAG, "Failed to open file");
-        return Status::Error;
-    }
-    fclose(f);
-    files_created++;
-    if (files_created == MAX_FILES) {
-        ESP_LOGE(SDcardTAG, "Maximum File count reached");
-        return Status::Error;
-    }
-    filename = "/SDcard/" + std::to_string(files_created) + "_INMP441.txt";
-    return Status::Success;
-}
+// SDcard::Status SDcard::files_checker() {
+//     filename = BASE_FILENAME;
+//     FILE *f = fopen(filename.c_str(), "a");
+//     if (f == NULL) {
+//         ESP_LOGE(SDcardTAG, "Failed to open file");
+//         return Status::Error;
+//     }
+//     fclose(f);
+//     files_created++;
+//     if (files_created == MAX_FILES) {
+//         ESP_LOGE(SDcardTAG, "Maximum File count reached");
+//         return Status::Error;
+//     }
+//     filename = "/SDcard/" + std::to_string(files_created) + "_INMP441.txt";
+//     return Status::Success;
+// }
+
+// SDcard::Status SDcard::files_checker() {
+//     for (int i = 0; i < MAX_FILES; i++) {
+//         filename = "/SDcard/" + std::to_string(i) + "_INMP441.txt";
+//         if ((file_exists(filename.c_str()) != 0)) {
+//             files_created = i;
+//             break;
+//         }
+//     }
+//     if (files_created == MAX_FILES) {
+//         ESP_LOGE(SDcardTAG, "Maximum File count reached");
+//         return Status::Error;
+//     }
+
+//     filename = "/SDcard/" + std::to_string(files_created) + "_INMP441.txt";
+//     FILE *f = fopen(filename.c_str(), "a");
+//     if (f == NULL) {
+//         ESP_LOGE(SDcardTAG, "Failed to open file");
+//         return Status::Error;
+//     }
+//     fclose(f);
+//     return Status::Success;
+// }
+
+// int SDcard::file_exists(const char *path) {
+//     struct stat buffer;
+//     return (stat(path, &buffer) == 0);
+// }

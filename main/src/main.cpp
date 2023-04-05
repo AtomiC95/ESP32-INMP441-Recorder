@@ -9,14 +9,17 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-void gatherData(Microphone &microphone, SDcard &filesystem, std::array<int16_t, Microphone::BUFFERDEPTH> &data, uint8_t seconds) {
-    filesystem.files_checker();
+void gatherData(Microphone &microphone, SDcard &filesystem, std::array<int16_t, Microphone::BUFFERDEPTH> &data, uint16_t seconds) {
+    //filesystem.files_checker();
     // read data for seconds and save them to the sd card
-    for (int i = 0; i < seconds * Microphone::counter; i++) {
+    for (int i = 0; i < seconds; i++) {
         microphone.read(data);
-        if (filesystem.save(data) == SDcard::Status::Error) {
-            i = seconds * Microphone::counter;
-        };
+        ESP_LOGI(SDcard::SDcardTAG, "saving data");
+        SDcard::Status status = filesystem.save(data);
+        if (status == SDcard::Status::Error) {
+            filesystem.unmount();
+            i = seconds;
+        }
     }
 
     vTaskDelay(100);
@@ -40,7 +43,7 @@ void mainTask() {
 
     ESP_LOGI(SDcard::SDcardTAG, "Filesytem initialized");
 
-    gatherData(microphone, filesystem, data, 31);
+    gatherData(microphone, filesystem, data, 610);
 
     while (true) {
         vTaskDelay(1);

@@ -21,7 +21,7 @@ class Microphone {
     };
     static constexpr const char *MicrophoneTAG = "Microphone";
     // defines the buffer size.
-    static constexpr uint16_t BUFFERDEPTH = 512;
+    static constexpr uint16_t BUFFERDEPTH = 8000;
     // sample_rate / bufferdepth = loops per seconds
     // -> 8000/512 = 15,25 ~ 16 -> for 1 seconds of recordings, 16 loops are nessesary
     static constexpr uint16_t counter = (I2S_SAMPLE_RATE / BUFFERDEPTH) + 1;

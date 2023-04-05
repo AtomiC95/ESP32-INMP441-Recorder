@@ -9,7 +9,7 @@ Microphone::Status Microphone::init() {
     i2s_config.mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX);
     i2s_config.sample_rate = I2S_SAMPLE_RATE;
     i2s_config.bits_per_sample = (i2s_bits_per_sample_t)16;
-    i2s_config.channel_format = I2S_CHANNEL_FMT_ONLY_RIGHT;
+    i2s_config.channel_format = I2S_CHANNEL_FMT_ONLY_LEFT;
     i2s_config.communication_format =
         i2s_comm_format_t(I2S_COMM_FORMAT_STAND_I2S |
                           I2S_COMM_FORMAT_I2S_MSB);
