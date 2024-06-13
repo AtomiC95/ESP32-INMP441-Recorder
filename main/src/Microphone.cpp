@@ -3,7 +3,6 @@
 #include "driver/i2s.h"
 #include "esp_log.h"
 
-// initialize microphone using i2s. Der hat ne Abtastrate von, der benutzt GPIO 1,2,3,4, ist eingestellt auf einen Kanal, Liest ein sample mit der größ0e 512 byte innerhalb von 3 sekunden.
 Microphone::Status Microphone::init() {
     i2s_driver_config_t i2s_config = {};
     i2s_config.mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX);
